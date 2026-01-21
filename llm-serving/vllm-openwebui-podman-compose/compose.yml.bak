@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  vllm:
+    image: docker.io/vllm/vllm-openai:latest
+    container_name: vllm
+    ports:
+      - "8000:8000"
+    volumes:
+      - /home/nicholas/models:/models:Z
+    ipc: host
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command:
+      - --model
+      - /models/gemma-3-1b-it
+      - --served-model-name
+      - gemma-3-1b-it
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --max-model-len
+      - "4000"
+      - --max-num-seqs
+      - "4"
+      - --gpu-memory-utilization
+      - "0.85"
+    restart: unless-stopped
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    ports:
+      - "8080:8080"
+    environment:
+      HOST: 0.0.0.0
+      OLLAMA_BASE_URL: http://host.containers.internal:11434
+      OPENAI_API_BASE_URL: http://host.containers.internal:8000/v1
+    volumes:
+      - ./mnt/data:/app/backend/data:Z
+    extra_hosts:
+      - host.containers.internal:host-gateway
+    depends_on:
+      - vllm
+    restart: always
