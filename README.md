@@ -10,7 +10,9 @@ the one with the latest kernal. Again, before continuing. Make sure everything
 is updated.
 
 Next to install
+
 * The latest nvidia driver
 * The cuda-toolkit
 * The nvidia container toolkit
+
 follow the readme at ./nvidia-cuda-setup/README.md
