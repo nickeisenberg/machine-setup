@@ -1,6 +1,6 @@
-To install the latest nvidia driver, run nvidia-driver-latest.sh. 
+To install the latest nvidia driver, run `./nvidia-driver.sh`. 
 
-After the reboot, to install the cuda-tool-kit, run cuda-12_9.sh. This will
+After the reboot, to install the cuda-tool-kit, run `./cuda-12_9.sh`. This will
 install the runfile from nvidia and run it as well. When the runfile runs, its
 going to ask you whether or not you want to continue or abort. Hit continue.
 Then after that it is going to have you type the word accept. After that there
@@ -13,5 +13,5 @@ PATH="${PATH}:/usr/local/cuda-12.9/bin"
 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda-12.9/lib64"
 ```
 
-After install cuda, run nvidia-container-toolkit.sh to install the nvidia 
+After install cuda, run `./nvidia-container-toolkit.sh` to install the nvidia 
 container toolkit.
