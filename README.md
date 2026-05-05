@@ -4,7 +4,7 @@ On boot, there may be a couple RHEL options to choose at the GRUB menu. Pick
 the one with the latest kernal. Again, before continuing. Make sure everything
 is updated.
 
-# udated vim
+# Updated vim from source
 To install the up to date vim with clipboard support follow the readme 
 at ./vim/README.md
 
