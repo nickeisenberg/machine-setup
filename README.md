@@ -1,13 +1,12 @@
-On a fresh install of RHEL9, start with the following:
-
-```bash
-sudo dnf update -y
-sudo reboot
-```
+On a fresh install of RHEL9, start with  running `./start-here.sh`
 
 On boot, there may be a couple RHEL options to choose at the GRUB menu. Pick
 the one with the latest kernal. Again, before continuing. Make sure everything
 is updated.
+
+# udated vim
+To install the up to date vim with clipboard support follow the readme 
+at ./vim/README.md
 
 # Nvidia
 To install
