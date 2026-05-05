@@ -21,4 +21,4 @@ sudo dnf module enable nvidia-driver:${driver_version}
 sudo dnf install nvidia-driver
 sudo dnf install nvidia-driver-cuda
 
-sudo reboot
+# sudo reboot
