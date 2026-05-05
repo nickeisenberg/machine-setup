@@ -1,4 +1,4 @@
-On a fresh install of RHEL9, start with  running `./start-here.sh`
+On a fresh install of RHEL9, start with `.start-here/README.md`
 
 On boot, there may be a couple RHEL options to choose at the GRUB menu. Pick
 the one with the latest kernal. Again, before continuing. Make sure everything
