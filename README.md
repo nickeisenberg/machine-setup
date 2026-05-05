@@ -6,7 +6,7 @@ is updated.
 
 # Updated vim from source
 To install the up to date vim with clipboard support follow the readme 
-at ./vim/README.md
+at `./vim/README.md`
 
 # Nvidia
 To install
@@ -15,7 +15,7 @@ To install
 * The cuda-toolkit
 * The nvidia container toolkit
 
-follow the readme at ./nvidia-cuda-setup/README.md
+follow the readme at `./nvidia-cuda-setup/README.md`
 
 # LLMs
 To do the following,
@@ -25,4 +25,4 @@ To do the following,
 * pull gemma-3-1b-it from Huggingface
 * launch all containers either separately or with podman compose
 
-follow the readme at ./llm-serving/README.md
+follow the readme at `./llm-serving/README.md`
