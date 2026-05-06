@@ -35,6 +35,19 @@ services:
       - "0.85"
     restart: unless-stopped
 
+  pipelines:
+    build:
+      context: ./dockerfiles/pipelines
+      dockerfile: Dockerfile
+    container_name: openwebui-pipelines
+    ports:
+      - "9099:9099"
+    volumes:
+      - ./mnt/pipelines:/app/pipelines:Z
+    environment:
+      PIPELINES_API_KEY: password
+    restart: always
+
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: openwebui
@@ -44,10 +57,11 @@ services:
       HOST: 0.0.0.0
       OLLAMA_BASE_URL: http://host.containers.internal:11434
       OPENAI_API_BASE_URL: http://host.containers.internal:8000/v1
+      PIPELINES_API_BASE_URL: http://pipelines:9099
     volumes:
       - ./mnt/data:/app/backend/data:Z
-    extra_hosts:
-      - host.containers.internal:host-gateway
     depends_on:
       - vllm
+      - pipelines
     restart: always
+
