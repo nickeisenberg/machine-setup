@@ -1,2 +1,2 @@
-podman pull docker.io/vllm/vllm-openai:latest
+sudo podman pull docker.io/vllm/vllm-openai:latest
 
