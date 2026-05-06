@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ${HOME}/models:/models:Z
+      - ${MODEL_DIR}:/models:Z
     ipc: host
     environment:
       NVIDIA_VISIBLE_DEVICES: all
