@@ -31,8 +31,9 @@ follow the readme at `./nvidia-cuda-setup/README.md`
 
 To do the following,
  
-* pull the openwebui 
+* pull the openwebui container
 * pull vllm container
+* pull ollama container
 * pull gemma-3-1b-it from Huggingface
 * launch all containers either separately or with podman compose
 
