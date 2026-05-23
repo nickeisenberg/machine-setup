@@ -1,0 +1,38 @@
+services:
+  vllm:
+    image: docker.io/vllm/vllm-openai:latest
+    container_name: vllm
+    command:
+      - --model
+      - /models/gemma-3-4b-it
+      - --served-model-name
+      - gemma-3-4b-it
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --max-model-len
+      - "20000"
+    ipc: host
+    devices:
+      - nvidia.com/gpu=all
+    volumes:
+      - ${HOME}/.local/share/huggingface/models:/models:Z
+    networks:
+      - llm-net
+
+  nginx:
+    image: docker.io/library/nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
+      - ./nginx/tokens.map:/etc/nginx/tokens.map:ro,Z
+    depends_on:
+      - vllm
+    networks:
+      - llm-net
+
+networks:
+  llm-net:
