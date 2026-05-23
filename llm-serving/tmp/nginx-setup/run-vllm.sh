@@ -5,8 +5,8 @@ podman run \
     --ipc=host \
     -v ${HOME}/.local/share/huggingface/models:/models:Z \
     docker.io/vllm/vllm-openai:latest \
-    --model /models/gemma-3-4b-it \
-    --served-model-name gemma-3-4b-it \
+    --model /models/gemma-3-1b-it \
+    --served-model-name gemma-3-1b-it \
     --host 0.0.0.0 \
     --port 8000 \
     --max-model-len 20000
