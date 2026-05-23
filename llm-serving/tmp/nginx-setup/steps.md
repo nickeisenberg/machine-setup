@@ -86,7 +86,7 @@ http {
     map $http_authorization $auth_ok {
         default 0;
 
-        "Bearer sk-REPLACE_ME" 1;
+        include /etc/nginx/tokens.map;
     }
 
     log_format llm '$remote_addr - $request';
