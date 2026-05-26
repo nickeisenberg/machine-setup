@@ -73,7 +73,7 @@ Save this token.
 Create file:
 
 ```bash
-nvim nginx.conf
+vi nginx.conf
 ```
 
 Paste:
@@ -82,6 +82,8 @@ Paste:
 events {}
 
 http {
+
+    map_hash_bucket_size 128;
 
     map $http_authorization $auth_ok {
         default 0;
@@ -94,7 +96,7 @@ http {
     access_log /var/log/nginx/access.log llm;
 
     server {
-        listen 80;
+        listen 8001;
 
         client_max_body_size 100M;
 
@@ -104,7 +106,7 @@ http {
                 return 401;
             }
 
-            proxy_pass http://vllm:8000;
+			proxy_pass http://vllm:8000;
 
             proxy_http_version 1.1;
 
@@ -122,98 +124,68 @@ http {
 }
 ```
 
-Replace:
+---
 
-```text
-sk-REPLACE_ME
+# 5. Start vLLM and nginx Container
+
+Run the following with `podman compose`
+
+```
+services:
+
+  vllm:
+    image: docker.io/vllm/vllm-openai:latest
+    container_name: vllm
+    command:
+      - /models/gemma-3-270m-it
+      - --served-model-name
+      - gemma-3-270m-it
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --max-model-len
+      - "2048"
+      - --max-num-seqs
+      - "32"
+      - --gpu-memory-utilization
+      - "0.80"
+      - --enforce-eager
+    environment:
+      PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+    devices:
+      - nvidia.com/gpu=all
+    security_opt:
+      - label=disable
+    ipc: host
+    volumes:
+      - ${HOME}/llm-weights:/models:Z
+    networks:
+      - llm-net
+    restart: unless-stopped
+
+  nginx:
+    image: docker.io/library/nginx:latest
+    container_name: nginx
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
+      - ./nginx/tokens.map:/etc/nginx/tokens.map:ro,Z
+    depends_on:
+      - vllm
+    networks:
+      - llm-net
+    restart: unless-stopped
+
+networks:
+  llm-net:
 ```
 
-with your generated token.
 
 ---
 
-# 5. Start vLLM Container
-
-Run vLLM inside podman:
-
-```bash
-podman run -d \
-    --name vllm \
-    --network llm-net \
-    --device nvidia.com/gpu=all \
-    --ipc=host \
-    -v ${HOME}/.local/share/huggingface/models:/models:Z \
-    docker.io/vllm/vllm-openai:latest \
-    --model /models/gemma-3-4b-it \
-    --served-model-name gemma-3-4b-it \
-    --host 0.0.0.0 \
-    --port 8000 \
-    --max-model-len 20000
-```
-
-IMPORTANT:
-
-Do NOT expose port 8000 publicly.
-
-Do NOT add:
-
-```bash
--p 8000:8000
-```
-
----
-
-# 6. Verify vLLM Running
-
-```bash
-podman logs -f vllm
-```
-
-Wait for:
-- Uvicorn startup
-- model load completion
-- server listening on port 8000
-
----
-
-# 7. Start NGINX Container
-
-From inside `~/nginx`:
-
-```bash
-podman run -d \
-    --name nginx \
-    --network llm-net \
-    -p 80:80 \
-    -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro,Z \
-    docker.io/library/nginx:latest
-```
-
----
-
-# 8. Verify NGINX
-
-View logs:
-
-```bash
-podman logs nginx
-```
-
-Test config:
-
-```bash
-podman exec -it nginx nginx -t
-```
-
-Reload config:
-
-```bash
-podman exec nginx nginx -s reload
-```
-
----
-
-# 9. Test Authentication
+# 6. Test Authentication
 
 ## Without Token
 
@@ -241,7 +213,7 @@ Expected:
 
 ---
 
-# 10. Test with OpenAI Python SDK
+# 7. Test with OpenAI Python SDK
 
 ```python
 from openai import OpenAI
@@ -285,65 +257,6 @@ vllm:8000
 ```
 
 inside podman network.
-
----
-
-# Useful Commands
-
-## List Running Containers
-
-```bash
-podman ps
-```
-
----
-
-## View Container Logs
-
-```bash
-podman logs nginx
-podman logs vllm
-```
-
----
-
-## Enter NGINX Container Shell
-
-```bash
-podman exec -it nginx bash
-```
-
-or:
-
-```bash
-podman exec -it nginx sh
-```
-
----
-
-## Reload NGINX Config
-
-```bash
-podman exec nginx nginx -s reload
-```
-
----
-
-## Stop Containers
-
-```bash
-podman stop nginx
-podman stop vllm
-```
-
----
-
-## Remove Containers
-
-```bash
-podman rm nginx
-podman rm vllm
-```
 
 ---
 
