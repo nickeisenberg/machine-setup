@@ -1,3 +1,18 @@
+get_git_branch() {
+    if git --version > /dev/null; then
+        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    else
+        echo
+    fi
+}
+
+color_prompt=yes
+if [ "$color_prompt" = yes ]; then
+    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[01;31m\]$(get_git_branch)\[\033[00m\]\$ '
+else
+    PS1='\u@\h:\w$(get_git_branch)\$ '
+fi
+
 setxkbmap -option ctrl:nocaps
 
 PATH=~/.local/bin:${PATH}
