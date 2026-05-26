@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   vllm:
     image: docker.io/vllm/vllm-openai:latest

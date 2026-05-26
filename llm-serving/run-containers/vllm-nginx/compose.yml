@@ -1,5 +1,4 @@
 services:
-
   vllm:
     image: docker.io/vllm/vllm-openai:latest
     container_name: vllm
