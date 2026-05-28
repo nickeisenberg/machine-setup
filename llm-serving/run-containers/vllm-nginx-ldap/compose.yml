@@ -25,7 +25,7 @@ services:
       - label=disable
     ipc: host
     volumes:
-      - ${HOME}/llm-weights:/models:Z
+      - ${LLM_WEIGHTS_DIR}:/models:Z
     networks:
       - llm-net
     restart: unless-stopped
