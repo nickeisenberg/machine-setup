@@ -1,4 +1,26 @@
 services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+
+    command:
+      - start-dev 
+
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: adminpassword
+
+    ports:
+      - "8081:8080"
+
+    volumes:
+      - ./keycloak-data:/opt/keycloak/data:Z
+
+    networks:
+      - llm-net
+
+    restart: unless-stopped
+
   vllm:
     image: docker.io/vllm/vllm-openai:latest
     container_name: vllm
@@ -40,7 +62,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
       - ./nginx/tokens.map:/etc/nginx/tokens.map:ro,Z
-      - ./certs:/etc/nginx/certs:ro,Z
+      - ./nginx/certs:/etc/nginx/certs:ro,Z
 
     depends_on:
       - vllm
@@ -53,14 +75,22 @@ services:
   ldap:
     image: docker.io/osixia/openldap:latest
     container_name: ldap
+  
     environment:
       LDAP_ORGANISATION: "Company"
       LDAP_DOMAIN: "company.local"
       LDAP_ADMIN_PASSWORD: "adminpassword"
+  
     ports:
       - "1389:389"
+  
+    volumes:
+      - ./ldap-data:/var/lib/ldap:Z
+      - ./ldap-config:/etc/ldap/slapd.d:Z
+  
     networks:
       - llm-net
+  
     restart: unless-stopped
 
 networks:
