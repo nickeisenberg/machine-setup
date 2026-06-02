@@ -70,9 +70,9 @@ services:
     container_name: vllm
 
     command:
-      - /models/gemma-3-270m-it
+      - /models/${LLM_MODEL_NAME}
       - --served-model-name
-      - gemma-3-270m-it
+      - ${LLM_MODEL_NAME}
       - --host
       - 0.0.0.0
       - --port
