@@ -10,10 +10,7 @@ client = OpenAI(
 response = client.chat.completions.create(
     model="gemma-3-270m-it",
     messages=[
-        {
-            "role": "user",
-            "content": "How are you?"
-        }
+        {"role": "user", "content": "Hello"}
     ],
 )
 

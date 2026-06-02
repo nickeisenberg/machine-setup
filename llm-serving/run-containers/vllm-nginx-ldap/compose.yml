@@ -3,7 +3,7 @@ services:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     command:
-      - start-dev 
+      - start-dev
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: adminpassword
@@ -13,7 +13,7 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - ./keycloak-data:/opt/keycloak/data:Z
+      - ./keycloak/data:/opt/keycloak/data:Z
     networks:
       - llm-net
     restart: unless-stopped
@@ -25,37 +25,43 @@ services:
       - "8080:8080"
     environment:
       HOST: 0.0.0.0
-    
-      OPENAI_API_BASE_URL: http://nginx:8001/v1
-    
+
+      OPENAI_API_BASE_URL: http://vllm:8000/v1
+
       OFFLINE_MODE: "true"
       HF_HUB_OFFLINE: "1"
-    
+
       ENABLE_OAUTH_SIGNUP: "true"
-    
+
       OAUTH_PROVIDER_NAME: "Keycloak"
-    
+
       OAUTH_CLIENT_ID: "llm-api"
       OAUTH_CLIENT_SECRET: "TQm3Ia0Ab22xIwADFP63MdSKqyLFu2xi"
-    
+
       OPENID_PROVIDER_URL: "http://10.89.1.1:8081/realms/llm-demo/.well-known/openid-configuration"
-    
+
       OPENID_REDIRECT_URI: "http://localhost:8080/oauth/oidc/callback"
-    
+
       WEBUI_URL: "http://localhost:8080"
+
     extra_hosts:
       - "localhost:10.89.1.1"
+
     volumes:
-      - ./openwebui-data:/app/backend/data:Z
+      - ./openwebui/data:/app/backend/data:Z
+
     depends_on:
       - nginx
+
     networks:
       - llm-net
+
     restart: unless-stopped
 
   vllm:
     image: docker.io/vllm/vllm-openai:latest
     container_name: vllm
+
     command:
       - /models/gemma-3-270m-it
       - --served-model-name
@@ -71,54 +77,72 @@ services:
       - --gpu-memory-utilization
       - "0.80"
       - --enforce-eager
+
     ipc: host
+
     environment:
       NVIDIA_VISIBLE_DEVICES: all
       PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
               count: all
-              capabilities: [gpu]
+              capabilities:
+                - gpu
+
     security_opt:
       - label=disable
+
     volumes:
       - ${LLM_WEIGHTS_DIR}:/models:Z
+
     networks:
       - llm-net
+
     restart: unless-stopped
 
   nginx:
     image: docker.io/library/nginx:latest
     container_name: nginx
+
     ports:
       - "8001:8001"
+
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
       - ./nginx/tokens.map:/etc/nginx/tokens.map:ro,Z
       - ./nginx/certs:/etc/nginx/certs:ro,Z
+
     depends_on:
       - vllm
+
     networks:
       - llm-net
+
     restart: unless-stopped
 
   ldap:
     image: docker.io/osixia/openldap:latest
     container_name: ldap
+
     environment:
       LDAP_ORGANISATION: "Company"
       LDAP_DOMAIN: "company.local"
       LDAP_ADMIN_PASSWORD: "adminpassword"
+
     ports:
       - "1389:389"
+
     volumes:
-      - ./ldap-data:/var/lib/ldap:Z
-      - ./ldap-config:/etc/ldap/slapd.d:Z
+      - ./ldap/data:/var/lib/ldap:Z
+      - ./ldap/config:/etc/ldap/slapd.d:Z
+
     networks:
       - llm-net
+
     restart: unless-stopped
 
 networks:
