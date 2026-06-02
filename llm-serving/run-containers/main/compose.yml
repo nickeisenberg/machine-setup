@@ -20,7 +20,7 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - ./keycloak/data:/opt/keycloak/data:Z
+      - ./mnt/keycloak/data:/opt/keycloak/data:Z
     networks:
       - llm-net
     restart: unless-stopped
@@ -55,7 +55,7 @@ services:
       - "localhost:10.89.1.1"
 
     volumes:
-      - ./openwebui/data:/app/backend/data:Z
+      - ./mnt/openwebui/data:/app/backend/data:Z
 
     depends_on:
       - nginx
@@ -143,8 +143,8 @@ services:
       - "1389:389"
 
     volumes:
-      - ./ldap/data:/var/lib/ldap:Z
-      - ./ldap/config:/etc/ldap/slapd.d:Z
+      - ./mnt/ldap/data:/var/lib/ldap:Z
+      - ./mnt/ldap/config:/etc/ldap/slapd.d:Z
 
     networks:
       - llm-net
