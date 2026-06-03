@@ -1,0 +1,7 @@
+dn: uid=jane,ou=people,dc=company,dc=local
+objectClass: inetOrgPerson
+cn: Jane
+sn: Doe
+uid: jane
+mail: jane@company.local
+userPassword: password123
