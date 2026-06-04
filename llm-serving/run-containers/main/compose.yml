@@ -6,6 +6,33 @@ services:
       - llm-net
     restart: unless-stopped
 
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    ports:
+      - "8080:8080"
+    environment:
+      HOST: 0.0.0.0
+      OPENAI_API_BASE_URL: http://vllm:8000/v1
+      OFFLINE_MODE: "true"
+      HF_HUB_OFFLINE: "1"
+      ENABLE_OAUTH_SIGNUP: "true"
+      OAUTH_PROVIDER_NAME: "Keycloak"
+      OAUTH_CLIENT_ID: "llm-api"
+      OAUTH_CLIENT_SECRET: "TQm3Ia0Ab22xIwADFP63MdSKqyLFu2xi"
+      OPENID_PROVIDER_URL: "http://10.89.1.1:8081/realms/llm-demo/.well-known/openid-configuration"
+      OPENID_REDIRECT_URI: "http://localhost:8080/oauth/oidc/callback"
+      WEBUI_URL: "http://localhost:8080"
+    extra_hosts:
+      - "localhost:10.89.1.1"
+    volumes:
+      - ./mnt/openwebui/data:/app/backend/data:Z
+    depends_on:
+      - vllm 
+    networks:
+      - llm-net
+    restart: unless-stopped
+
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak

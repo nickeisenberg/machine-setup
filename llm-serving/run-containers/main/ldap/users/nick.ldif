@@ -1,0 +1,11 @@
+dn: ou=people,dc=company,dc=local
+objectClass: organizationalUnit
+ou: people
+
+dn: uid=nick,ou=people,dc=company,dc=local
+objectClass: inetOrgPerson
+cn: Nick
+sn: Eisenberg
+uid: nick
+mail: nick@company.local
+userPassword: password123
