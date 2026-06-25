@@ -1,1 +1,16 @@
+**/tmp/
 **/mnt/
+
+**/openwebui-data/
+**/openwebui-data.bak/
+
+**/cache/
+
+**/vector_db/
+
+*.db
+*.db-shm
+*.db-wal
+
+logs/
+*.log
