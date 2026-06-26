@@ -11,5 +11,8 @@ sudo dnf install -y \
 	openldap-clients \
 	podman \
 	podman-compose \
+	python3.12 \
+	python3.12-devel \
+	python3.12-pip \
 	tmux \
 	xclip
