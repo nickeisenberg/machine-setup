@@ -1,5 +1,7 @@
 set -e
 
+prefix="/opt/data/local"
+
 # sudo dnf builddep -y vim is the following
 sudo dnf install -y \
 	python3.12 \
@@ -30,8 +32,7 @@ sudo dnf install -y \
 	desktop-file-utils
 
 
-cd ./vim
-mkdir -p /opt/data/eisenbnt_la/.local
+cd /opt/data/eisenbnt_la/software/vim
 
 make distclean
 
@@ -42,7 +43,7 @@ make distclean
 	--enable-fail-if-missing \
 	--with-python3-command=$(which python3.12) \
 	--with-python3-config-dir=$(python3.12-config --configdir) \
-	--prefix="/opt/data/eisenbnt_la/.local"
+	--prefix="${prefix}"
 
 make -j 16
 make install
