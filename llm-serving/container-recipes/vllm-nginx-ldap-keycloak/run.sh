@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if [[ -z ${KEYCLOAK_ADMIN} ]] | [[ -z ${KEYCLOAK_ADMIN_PASSWORD} ]]; then
+	echo "set keycloak admin and pass"
+	return 1
+fi
+
 export LLM_WEIGHTS_DIR="/opt/data/shared/model-weights"
 export LLM_MODEL_NAME="nvidia/Llama-4-Scout-17B-16E-Instruct-NVFP4"
 
