@@ -87,8 +87,8 @@ services:
     container_name: ldap
 
     environment:
-      LDAP_ORGANISATION: "Company"
-      LDAP_DOMAIN: "company.local"
+      LDAP_ORGANISATION: "MSTS"
+      LDAP_DOMAIN: "nv.doe.gov"
       LDAP_ADMIN_PASSWORD: "adminpassword"
 
     ports:

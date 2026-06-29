@@ -2,4 +2,4 @@ ldapadd -x \
   -H ldap://localhost:1389 \
   -D "cn=admin,dc=company" \
   -w adminpassword \
-  -f ./users/nick.ldif
+  -f ./users/admin.ldif
