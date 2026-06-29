@@ -89,7 +89,7 @@ services:
     environment:
       LDAP_ORGANISATION: "MSTS"
       LDAP_DOMAIN: "nv.doe.gov"
-      LDAP_ADMIN_PASSWORD: "adminpassword"
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD} 
 
     ports:
       - "1389:389"
