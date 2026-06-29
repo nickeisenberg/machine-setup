@@ -1,6 +1,6 @@
 services:
   auth:
-    build: ./auth
+    image: localhost/auth-fips:latest   # <-- Point to your pre-built local image
     container_name: auth
     networks:
       - llm-net
@@ -20,13 +20,13 @@ services:
     ports:
       - "8081:8080"
     volumes:
-      - ./mnt/keycloak/data:/opt/keycloak/data:Z
+      - ./mnt/keycloak/data:/opt/keycloak/data:Z,U
     networks:
       - llm-net
     restart: unless-stopped
 
   vllm:
-    image: docker.io/vllm/vllm-openai:latest
+    image: localhost/vllm-openai-fips
     container_name: vllm
     command:
       - /models/${LLM_MODEL_NAME}
