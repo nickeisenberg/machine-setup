@@ -3,6 +3,6 @@ curl -X POST \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=password" \
   -d "client_id=llm-api" \
-  -d "client_secret=ura50uNUo8IbyRG9TwVUoKxGL1XFFKIW" \
-  -d "username=admin" \
-  -d "password=password123"
+  -d "client_secret=${KEYCLOAK_CLIENT_SECRET}" \
+  -d "username=${KEYCLOAK_ADMIN}" \
+  -d "password=${KEYCLOAK_ADMIN_PASSWORD}"

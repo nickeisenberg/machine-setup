@@ -2,18 +2,24 @@
 
 set -euo pipefail
 
-if [[ -z ${KEYCLOAK_ADMIN} ]] | [[ -z ${KEYCLOAK_ADMIN_PASSWORD} ]]; then
-	echo "set keycloak admin and pass"
-	return 1
+export LLM_WEIGHTS_DIR="/opt/data/shared/model-weights"
+export LLM_MODEL_NAME="nvidia/Llama-4-Scout-17B-16E-Instruct-NVFP4"
+
+if [[ -z ${KEYCLOAK_ADMIN} ]]; then
+	echo "WARNING:KEYCLOAK_ADMIN has not been set"
+fi
+
+if [[ -z ${KEYCLOAK_ADMIN_PASSWORD} ]]; then
+	echo "WARNING: KEYCLOAK_ADMIN_PASSWORD has not been set"
+fi
+
+if [[ -z ${KEYCLOAK_CLIENT_SECRET} ]]; then
+	echo "WARNING: KEYCLOAK_CLIENT_SECRET has not been set."
 fi
 
 if [[ -z ${LDAP_ADMIN_PASSWORD} ]]; then
-	echo "set keycloak admin and pass"
-	return 1
+	echo "WARNING LDAP_ADMIN_PASSWORD has not been set."
 fi
-
-export LLM_WEIGHTS_DIR="/opt/data/shared/model-weights"
-export LLM_MODEL_NAME="nvidia/Llama-4-Scout-17B-16E-Instruct-NVFP4"
 
 mkdir -p \
     ./mnt/keycloak/data \
