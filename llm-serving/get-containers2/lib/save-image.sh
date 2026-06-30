@@ -46,7 +46,8 @@ save_podman_image() {
     fi
 
     if [[ -z "${tar_name}" ]]; then
-		tar_name=$(echo ${image} | tr "/" "-")
+		tar_name=$(echo ${image} | tr "/" "_")
+		tar_name=$(echo ${tar_name} | tr ":" "-")
         echo "tar_name is set to ${tar_name}"
     fi
 
