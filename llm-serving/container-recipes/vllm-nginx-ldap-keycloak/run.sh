@@ -4,22 +4,35 @@ set -euo pipefail
 
 export LLM_WEIGHTS_DIR="/opt/data/shared/model-weights"
 export LLM_MODEL_NAME="nvidia/Llama-4-Scout-17B-16E-Instruct-NVFP4"
+export NGINX_PORT="8001"
 
-if [[ -z ${KEYCLOAK_ADMIN} ]]; then
+export KC_HOSTNAME="localhost"
+export KC_HOSTNAME_PORT="8081"
+
+export LDAP_PORT="1389"
+
+#--------------------------------------------------
+# keycloak variables
+#--------------------------------------------------
+if [[ -z ${KEYCLOAK_ADMIN:-} ]]; then
 	echo "WARNING:KEYCLOAK_ADMIN has not been set"
 fi
 
-if [[ -z ${KEYCLOAK_ADMIN_PASSWORD} ]]; then
+if [[ -z ${KEYCLOAK_ADMIN_PASSWORD:-} ]]; then
 	echo "WARNING: KEYCLOAK_ADMIN_PASSWORD has not been set"
 fi
 
-if [[ -z ${KEYCLOAK_CLIENT_SECRET} ]]; then
+if [[ -z ${KEYCLOAK_CLIENT_SECRET:-} ]]; then
 	echo "WARNING: KEYCLOAK_CLIENT_SECRET has not been set."
 fi
 
-if [[ -z ${LDAP_ADMIN_PASSWORD} ]]; then
+#--------------------------------------------------
+# ldap variables
+#--------------------------------------------------
+if [[ -z ${LDAP_ADMIN_PASSWORD:-} ]]; then
 	echo "WARNING LDAP_ADMIN_PASSWORD has not been set."
 fi
+
 
 mkdir -p \
     ./mnt/keycloak/data \

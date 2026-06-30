@@ -14,11 +14,11 @@ services:
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8081
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME_PORT: ${KC_HOSTNAME_PORT}
       KC_HTTP_ENABLED: "true"
     ports:
-      - "8081:8080"
+      - "${KC_HOSTNAME_PORT}:8080"
     volumes:
       - ./mnt/keycloak/data:/opt/keycloak/data:Z,U
     networks:
@@ -37,12 +37,7 @@ services:
       - --port
       - "8000"
       - --max-model-len
-      - "2048"
-      - --max-num-seqs
-      - "32"
-      - --gpu-memory-utilization
-      - "0.80"
-      - --enforce-eager
+      - "10000"
     ipc: host
     environment:
       NVIDIA_VISIBLE_DEVICES: all
@@ -68,7 +63,7 @@ services:
     container_name: nginx
 
     ports:
-      - "8001:8001"
+      - "${NGINX_PORT}:8001"
 
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
@@ -92,7 +87,7 @@ services:
       LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD} 
 
     ports:
-      - "1389:389"
+      - "${LDAP_PORT}:389"
 
     volumes:
       - ./mnt/ldap/data:/var/lib/ldap:Z
