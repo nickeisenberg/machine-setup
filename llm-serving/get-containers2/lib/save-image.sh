@@ -32,13 +32,13 @@ save_podman_image() {
         esac
     done
 
+	# hardcoding the save root for now.
     local save_root="/opt/data/shared/podman-images"
+
 	if [[ ! -d ${save_root} ]]; then
 		echo "${save_root} does not exist"
 		return 1
 	fi
-
-    local image_path="${save_root}/${tar_name}"
 
     if [[ -z "${image}" ]]; then
         echo "--image is required"
@@ -46,11 +46,11 @@ save_podman_image() {
     fi
 
     if [[ -z "${tar_name}" ]]; then
-        echo "--tar-name is required"
-        return 1
+		tar_name=$(echo ${image} | tr "/" "-")
+        echo "tar_name is set to ${tar_name}"
     fi
 
-    mkdir -p "${save_root}"
+    local image_path="${save_root}/${tar_name}"
 
     if [[ "${repull}" == "true" ]]; then
         echo "Force re-pulling image:"
