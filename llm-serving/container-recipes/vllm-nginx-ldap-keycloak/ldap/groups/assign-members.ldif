@@ -1,0 +1,14 @@
+dn: cn=vip,ou=groups,dc=nv,dc=doe,dc=gov
+changetype: modify
+add: member
+member: uid=eisenbnt,ou=people,dc=nv,dc=doe,dc=gov
+
+dn: cn=general,ou=groups,dc=nv,dc=doe,dc=gov
+changetype: modify
+add: member
+member: uid=swanmb,ou=people,dc=nv,dc=doe,dc=gov
+
+dn: cn=vip,ou=groups,dc=nv,dc=doe,dc=gov
+changetype: modify
+add: member
+member: uid=romanrm,ou=people,dc=nv,dc=doe,dc=gov

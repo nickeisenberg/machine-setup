@@ -1,4 +1,0 @@
-dn: cn=vip,ou=groups,dc=nv,dc=doe,dc=gov
-changetype: modify
-add: member
-member: uid=nick,ou=people,dc=nv,dc=doe,dc=gov
