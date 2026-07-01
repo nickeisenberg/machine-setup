@@ -3,12 +3,12 @@ from __future__ import annotations
 import argparse
 
 from ldap_manager.cli.commands import (
-    add_group,
-    add_user,
     config,
+    group,
     init,
     status,
     sync,
+    user,
 )
 
 
@@ -23,8 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     init.register(subparsers)
     config.register(subparsers)
-    add_user.register(subparsers)
-    add_group.register(subparsers)
+    user.register(subparsers)
+    group.register(subparsers)
     sync.register(subparsers)
     status.register(subparsers)
 
