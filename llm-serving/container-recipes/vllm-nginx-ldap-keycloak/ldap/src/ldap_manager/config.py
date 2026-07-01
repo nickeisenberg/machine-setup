@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import tomllib
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import Literal
 
 import tomli_w
-import tomllib
 
 
 @dataclass(slots=True)
@@ -20,6 +21,8 @@ class LDAPConfig:
 
     bind_dn: str = ""
     bind_password: str = ""
+
+    directory: Literal["openldap"] = "openldap"
 
 
 @dataclass(slots=True)

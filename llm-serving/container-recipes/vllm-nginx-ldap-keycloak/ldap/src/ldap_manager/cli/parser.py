@@ -6,6 +6,7 @@ from ldap_manager.cli.commands import (
     config,
     group,
     init,
+    ldap,
     status,
     sync,
     user,
@@ -26,6 +27,7 @@ def build_parser() -> argparse.ArgumentParser:
     user.register(subparsers)
     group.register(subparsers)
     sync.register(subparsers)
+    ldap.register(subparsers)
     status.register(subparsers)
 
     return parser

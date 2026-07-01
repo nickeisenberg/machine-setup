@@ -6,7 +6,8 @@ from pathlib import Path
 from ldap_manager.config import Config
 from ldap_manager.database import Database
 from ldap_manager.ldap.client import LDAPClient
-from ldap_manager.ldap.directories.openldap import OpenLDAP
+from ldap_manager.ldap.directories.base import Directory
+from ldap_manager.ldap.directories.factory import make_directory
 from ldap_manager.models import Group, User, UserGroup
 
 PROJECT_DIRECTORY = ".ldapman"
@@ -32,7 +33,7 @@ class Project:
         repr=False,
     )
 
-    _ldap_directory: OpenLDAP | None = field(
+    _ldap_directory: Directory | None = field(
         init=False,
         default=None,
         repr=False,
@@ -60,7 +61,7 @@ class Project:
         return self._database
 
     @property
-    def ldap_directory(self) -> OpenLDAP:
+    def ldap_directory(self) -> Directory:
         if self._ldap_directory is None:
             client = LDAPClient(
                 uri=self.config.ldap.uri,
@@ -68,7 +69,8 @@ class Project:
                 bind_password=self.config.ldap.bind_password,
             )
 
-            self._ldap_directory = OpenLDAP(
+            self._ldap_directory = make_directory(
+                name=self.config.ldap.directory,
                 client=client,
                 base_dn=self.config.ldap.base_dn,
             )
