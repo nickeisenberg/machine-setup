@@ -1,7 +1,0 @@
-dn: uid=eisenbnt,ou=people,dc=nv,dc=doe,dc=gov
-objectClass: inetOrgPerson
-cn: Nicholas
-sn: Eisenberg
-uid: eisenbnt
-mail: eisenbnt@nv.doe.gov
-userPassword: password123

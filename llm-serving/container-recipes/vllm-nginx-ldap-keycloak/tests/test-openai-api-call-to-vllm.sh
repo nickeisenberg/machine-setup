@@ -1,12 +1,12 @@
 #!/bin/bash
 
 MODEL="nvidia/Llama-4-Scout-17B-16E-Instruct-NVFP4"
-CLIENT_SECRET=ura50uNUo8IbyRG9TwVUoKxGL1XFFKIW
+KEYCLOAK_CLIENT_SECRET="ura50uNUo8IbyRG9TwVUoKxGL1XFFKIW"
 
 # 1. Fetch the token
 RESPONSE=$(curl -s \
   -d "client_id=llm-api" \
-  -d "client_secret=${CLIENT_SECRET}" \
+  -d "client_secret=${KEYCLOAK_CLIENT_SECRET}" \
   -d "username=admin" \
   -d "password=password123" \
   -d "grant_type=password" \

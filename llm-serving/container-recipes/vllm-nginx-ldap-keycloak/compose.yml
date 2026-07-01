@@ -37,7 +37,11 @@ services:
       - --port
       - "8000"
       - --max-model-len
-      - "10000"
+      - "2000"
+      - --max-num-seqs
+      - "32"
+      - --gpu-memory-utilization
+      - ".8"
     ipc: host
     environment:
       NVIDIA_VISIBLE_DEVICES: all

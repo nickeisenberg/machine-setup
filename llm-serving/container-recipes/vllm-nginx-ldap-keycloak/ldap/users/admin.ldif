@@ -1,7 +1,0 @@
-dn: uid=admin,ou=people,dc=nv,dc=doe,dc=gov
-objectClass: inetOrgPerson
-cn: admin
-sn: admin
-uid: admin
-mail: admin@nv.doe.gov
-userPassword: password123

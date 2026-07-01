@@ -4,5 +4,5 @@ curl -X POST \
   -d "grant_type=password" \
   -d "client_id=llm-api" \
   -d "client_secret=${KEYCLOAK_CLIENT_SECRET}" \
-  -d "username=${KEYCLOAK_ADMIN}" \
-  -d "password=${KEYCLOAK_ADMIN_PASSWORD}"
+  -d "username=dummy" \
+  -d "password=dummy"

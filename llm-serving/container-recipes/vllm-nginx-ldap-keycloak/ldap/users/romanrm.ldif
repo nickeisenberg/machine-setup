@@ -1,7 +1,0 @@
-dn: uid=romanrm,ou=people,dc=nv,dc=doe,dc=gov
-objectClass: inetOrgPerson
-cn: Ryan
-sn: Roman
-uid: romanrm
-mail: romanrm@nv.doe.gov
-userPassword: password123

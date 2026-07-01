@@ -1,0 +1,23 @@
+[project]
+name = "ldap-manager"
+version = "0.1.0"
+description = "OpenLDAP management utilities"
+requires-python = ">=3.12"
+
+dependencies = [
+    "sqlalchemy>=2.0",
+    "ldap3>=2.9",
+    "tomli-w>=1.0",
+]
+
+[project.scripts]
+ldapman = "ldap_manager.cli.main:main"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+ignore = ["E501"]
+unfixable = ["F401"]
+select = ["E", "F", "I", "UP"]

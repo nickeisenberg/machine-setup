@@ -1,7 +1,0 @@
-dn: uid=swanmb,ou=people,dc=nv,dc=doe,dc=gov
-objectClass: inetOrgPerson
-cn: Matthew
-sn: Swan
-uid: swanmb
-mail: swanmb@nv.doe.gov
-userPassword: password123
