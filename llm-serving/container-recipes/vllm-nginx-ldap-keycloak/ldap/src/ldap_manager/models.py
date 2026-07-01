@@ -75,10 +75,7 @@ class Group(Base):
 
     @classmethod
     def defaults(cls) -> list[Group]:
-        return [
-            cls(name="general"),
-            cls(name="vip"),
-        ]
+        return []
 
     @property
     def dn(self) -> str:
