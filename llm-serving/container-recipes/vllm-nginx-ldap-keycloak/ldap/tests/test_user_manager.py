@@ -6,21 +6,21 @@ from ldap_manager.managers.group_manager import GroupManager
 from ldap_manager.managers.user_manager import UserManager
 
 
-def test_add_user(user_manager: UserManager) -> None:
+def test_add_user(user_manager: UserManager) -> none:
     user = user_manager.add(
         uid="eisenbnt",
-        first_name="Nicholas",
-        last_name="Eisenberg",
+        first_name="nicholas",
+        last_name="eisenberg",
         email="eisenbnt@nv.doe.gov",
         password="password123",
     )
 
     assert user.uid == "eisenbnt"
-    assert user.first_name == "Nicholas"
-    assert user.last_name == "Eisenberg"
+    assert user.first_name == "nicholas"
+    assert user.last_name == "eisenberg"
     assert user.email == "eisenbnt@nv.doe.gov"
     assert user.enabled is True
-    assert user.cn == "Nicholas Eisenberg"
+    assert user.cn == "nicholas eisenberg"
     assert user.dn == "uid=eisenbnt,ou=people"
     assert user.groups == []
 

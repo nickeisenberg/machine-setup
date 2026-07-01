@@ -5,7 +5,8 @@ from pathlib import Path
 
 from ldap_manager.config import Config
 from ldap_manager.database import Database
-from ldap_manager.ldap import LDAP
+from ldap_manager.ldap.client import LDAPClient
+from ldap_manager.ldap.directories.openldap import OpenLDAP
 from ldap_manager.models import Group, User, UserGroup
 
 PROJECT_DIRECTORY = ".ldapman"
@@ -30,7 +31,8 @@ class Project:
         default=None,
         repr=False,
     )
-    _ldap: LDAP | None = field(
+
+    _ldap_directory: OpenLDAP | None = field(
         init=False,
         default=None,
         repr=False,
@@ -58,19 +60,26 @@ class Project:
         return self._database
 
     @property
-    def ldap(self) -> LDAP:
-        if self._ldap is None:
-            self._ldap = LDAP(
+    def ldap_directory(self) -> OpenLDAP:
+        if self._ldap_directory is None:
+            client = LDAPClient(
                 uri=self.config.ldap.uri,
                 bind_dn=self.config.ldap.bind_dn,
                 bind_password=self.config.ldap.bind_password,
+            )
+
+            self._ldap_directory = OpenLDAP(
+                client=client,
                 base_dn=self.config.ldap.base_dn,
             )
 
-        return self._ldap
+        return self._ldap_directory
 
     @classmethod
-    def initialize(cls, root: Path | None = None) -> Project:
+    def initialize(
+        cls,
+        root: Path | None = None,
+    ) -> Project:
         if root is None:
             root = Path.cwd()
 
@@ -84,6 +93,7 @@ class Project:
         project.directory.mkdir(exist_ok=False)
 
         database_path = (project.directory / DATABASE_FILE).resolve()
+
         project.config.database.url = f"sqlite:///{database_path}"
 
         project.config.save(project.config_path)
@@ -96,7 +106,10 @@ class Project:
         return project
 
     @classmethod
-    def find(cls, start: Path | None = None) -> Project:
+    def find(
+        cls,
+        start: Path | None = None,
+    ) -> Project:
         if start is None:
             start = Path.cwd()
 
@@ -108,7 +121,9 @@ class Project:
             if project_directory.is_dir():
                 return cls(
                     root=directory,
-                    config=Config.load(project_directory / CONFIG_FILE),
+                    config=Config.load(
+                        project_directory / CONFIG_FILE,
+                    ),
                 )
 
         raise RuntimeError("Not inside an ldapman project.")

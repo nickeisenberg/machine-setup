@@ -1,30 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from ldap_manager.database import Database
+from ldap_manager.dto import GroupReference, UserInfo
 from ldap_manager.models import User
-
-
-@dataclass(slots=True)
-class GroupReference:
-    name: str
-    dn: str
-
-
-@dataclass(slots=True)
-class UserInfo:
-    uid: str
-    first_name: str
-    last_name: str
-    email: str
-    enabled: bool
-    cn: str
-    dn: str
-    groups: list[GroupReference]
 
 
 class UserManager:
@@ -147,6 +128,7 @@ class UserManager:
     @staticmethod
     def _to_info(user: User) -> UserInfo:
         return UserInfo(
+            password=user.password,
             uid=user.uid,
             first_name=user.first_name,
             last_name=user.last_name,

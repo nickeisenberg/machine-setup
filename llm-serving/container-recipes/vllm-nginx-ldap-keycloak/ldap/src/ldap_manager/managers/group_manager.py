@@ -1,26 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from ldap_manager.database import Database
+from ldap_manager.dto import GroupInfo, UserReference
 from ldap_manager.models import Group, User
-
-
-@dataclass(slots=True)
-class UserReference:
-    uid: str
-    name: str
-
-
-@dataclass(slots=True)
-class GroupInfo:
-    name: str
-    description: str | None
-    dn: str
-    users: list[UserReference]
 
 
 class GroupManager:
