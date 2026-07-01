@@ -17,15 +17,6 @@ def user(user_manager: UserManager):
     )
 
 
-def test_default_groups_exist(group_manager: GroupManager) -> None:
-    groups = group_manager.list()
-
-    assert [g.name for g in groups] == [
-        "general",
-        "vip",
-    ]
-
-
 def test_add_group(group_manager: GroupManager) -> None:
     group = group_manager.add(
         "engineering",
@@ -120,8 +111,6 @@ def test_list_groups(group_manager: GroupManager) -> None:
     assert [g.name for g in groups] == [
         "admins",
         "engineering",
-        "general",
-        "vip",
     ]
 
 
@@ -129,6 +118,7 @@ def test_add_user_to_group(
     group_manager: GroupManager,
     user,
 ) -> None:
+    group_manager.add("general")
     group = group_manager.add_user(
         "general",
         "eisenbnt",
@@ -142,6 +132,9 @@ def test_add_user_twice(
     group_manager: GroupManager,
     user,
 ) -> None:
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     group_manager.add_user(
         "general",
         "eisenbnt",
@@ -157,6 +150,9 @@ def test_add_user_twice(
 def test_add_missing_user(
     group_manager: GroupManager,
 ) -> None:
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     with pytest.raises(ValueError):
         group_manager.add_user(
             "general",
@@ -179,6 +175,10 @@ def test_remove_user_from_group(
     group_manager: GroupManager,
     user,
 ) -> None:
+
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     group_manager.add_user(
         "general",
         "eisenbnt",
@@ -196,6 +196,10 @@ def test_remove_user_not_in_group(
     group_manager: GroupManager,
     user,
 ) -> None:
+
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     with pytest.raises(ValueError):
         group_manager.remove_user(
             "general",
@@ -206,6 +210,10 @@ def test_remove_user_not_in_group(
 def test_remove_missing_user(
     group_manager: GroupManager,
 ) -> None:
+
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     with pytest.raises(ValueError):
         group_manager.remove_user(
             "general",
@@ -228,6 +236,10 @@ def test_list_users(
     group_manager: GroupManager,
     user,
 ) -> None:
+
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     group_manager.add_user(
         "general",
         "eisenbnt",
@@ -243,6 +255,9 @@ def test_list_users(
 def test_list_users_empty(
     group_manager: GroupManager,
 ) -> None:
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
     users = group_manager.list_users("general")
 
     assert users == []

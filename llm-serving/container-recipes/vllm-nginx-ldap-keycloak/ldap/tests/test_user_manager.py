@@ -272,6 +272,12 @@ def test_user_groups(
         password="password123",
     )
 
+    if "general" not in group_manager.list():
+        group_manager.add("general")
+
+    if "vip" not in group_manager.list():
+        group_manager.add("vip")
+
     group_manager.add_user(
         "general",
         "eisenbnt",

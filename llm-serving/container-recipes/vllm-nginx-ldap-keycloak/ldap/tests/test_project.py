@@ -80,13 +80,3 @@ def test_database_created(project: Project) -> None:
     assert "users" in tables
     assert "groups" in tables
     assert "user_groups" in tables
-
-
-def test_default_groups_exist(database) -> None:
-    with database.session() as session:
-        groups = list(session.scalars(select(Group).order_by(Group.name)))
-
-    assert [group.name for group in groups] == [
-        "general",
-        "vip",
-    ]
